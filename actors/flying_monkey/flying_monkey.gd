@@ -22,7 +22,7 @@ var my_state = States.Chase
 onready var detection_area: Area2D = $DetectionArea
 onready var detection_collision: CollisionShape2D = $DetectionArea/DetectionAreaCollision
 onready var swoop_timer: Timer = $SwoopTimer
-onready var move_to_sprite: Sprite = $MoveToSprite
+onready var move_to_sprite: Sprite = $MoveToSprite # Used for debugging
 
 
 func _ready():
@@ -57,7 +57,7 @@ func _process(delta):
 			# Two options here: 
 			# a: Have monkey swoop to a static position behind the player (try running through player, allowing player to dodge)
 			# b: Have monkey adjust movement to always hit player (if not stopped by player hitting them, almost a guarenteed hit)
-			swoop_target = target.global_transform.origin
+#			swoop_target = target.global_transform.origin # option B
 			
 			direction = swoop_target - transform.origin
 			if(swoop_target.distance_to(global_transform.origin) < 10):

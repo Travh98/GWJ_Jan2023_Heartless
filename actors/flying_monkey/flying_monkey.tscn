@@ -30,6 +30,7 @@ process_mode = 0
 one_shot = true
 
 [node name="MoveToSprite" type="Sprite" parent="."]
+visible = false
 modulate = Color( 0.964706, 0.427451, 0.427451, 1 )
 position = Vector2( -1.90735e-06, -10 )
 scale = Vector2( 0.296875, 0.296875 )
