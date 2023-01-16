@@ -1,23 +1,19 @@
 extends KinematicBody2D
 
-export var Speed := 500
+const ANIMATION_DIRECTIONS := {Vector2.RIGHT: "right", Vector2.LEFT: "left", Vector2.UP: "up", Vector2.DOWN: "down"}
+const SPEED := 128
 
-var _sprites := {Vector2.RIGHT: 1, Vector2.LEFT: 3, Vector2.UP: 2, Vector2.DOWN: 0}
-var _velocity := Vector2.ZERO
+var velocity := Vector2.ZERO
 
-onready var animated_sprite: AnimatedSprite = $PlayerSprite
+onready var animated_sprite: AnimatedSprite = $Sprite
 
 func _physics_process(delta: float) -> void:
-	var direction := Vector2(
+	var input_direction := Vector2(
 		Input.get_action_strength("right") - Input.get_action_strength("left"),
 		Input.get_action_strength("down") - Input.get_action_strength("up")
-	)
-
-	# if we have 8 direction movement we need to normalize
-	if direction.length() > 1.0:
-		direction = direction.normalized()
-
-	move_and_slide(Speed * direction)
+	).normalized()
+	
+	move_and_slide(SPEED * input_direction)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -32,4 +28,4 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _update_sprite(direction: Vector2) -> void:
-	animated_sprite.frame = _sprites[direction]
+	animated_sprite.animation = ANIMATION_DIRECTIONS[direction]
