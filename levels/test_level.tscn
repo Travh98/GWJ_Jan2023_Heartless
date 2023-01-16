@@ -25,3 +25,12 @@ current = true
 
 [node name="FlyingMonkey" parent="." instance=ExtResource( 5 )]
 position = Vector2( 77, 52 )
+
+[node name="FlyingMonkey2" parent="." instance=ExtResource( 5 )]
+position = Vector2( 28, 139 )
+
+[node name="FlyingMonkey3" parent="." instance=ExtResource( 5 )]
+position = Vector2( 182, 114 )
+
+[node name="FlyingMonkey4" parent="." instance=ExtResource( 5 )]
+position = Vector2( 116, 177 )
