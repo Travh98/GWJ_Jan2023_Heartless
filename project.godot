@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="gamejam53"
+config/name="godot wild jam 53 Heartless"
 run/main_scene="res://levels/TestLevel.tscn"
 config/icon="res://icon.png"
 
