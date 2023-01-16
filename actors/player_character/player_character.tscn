@@ -3,27 +3,27 @@
 [ext_resource path="res://actors/player_character/player_character.gd" type="Script" id=1]
 [ext_resource path="res://actors/player_character/player_character.png" type="Texture" id=2]
 
-[sub_resource type="AtlasTexture" id=12]
+[sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 2 )
-region = Rect2( 40, 0, 40, 40 )
+region = Rect2( 0, 0, 40, 40 )
 
 [sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 2 )
 region = Rect2( 120, 0, 40, 40 )
 
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 2 )
+region = Rect2( 40, 0, 40, 40 )
+
 [sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 2 )
 region = Rect2( 80, 0, 40, 40 )
 
-[sub_resource type="AtlasTexture" id=10]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 40, 40 )
-
 [sub_resource type="SpriteFrames" id=5]
 animations = [ {
-"frames": [ SubResource( 12 ) ],
+"frames": [ SubResource( 10 ) ],
 "loop": true,
-"name": "right",
+"name": "down",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 11 ) ],
@@ -31,14 +31,14 @@ animations = [ {
 "name": "left",
 "speed": 5.0
 }, {
+"frames": [ SubResource( 12 ) ],
+"loop": true,
+"name": "right",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 9 ) ],
 "loop": true,
 "name": "up",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 10 ) ],
-"loop": true,
-"name": "down",
 "speed": 5.0
 } ]
 

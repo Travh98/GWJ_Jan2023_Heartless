@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name PlayerCharacter
 
 const ANIMATION_DIRECTIONS := {Vector2.RIGHT: "right", Vector2.LEFT: "left", Vector2.UP: "up", Vector2.DOWN: "down"}
 const SPEED := 128

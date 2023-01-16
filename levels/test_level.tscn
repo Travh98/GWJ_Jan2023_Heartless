@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://actors/player_character/player_character.tscn" type="PackedScene" id=1]
 [ext_resource path="res://levels/tileset.tres" type="TileSet" id=2]
 [ext_resource path="res://levels/generator/level_generator.tscn" type="PackedScene" id=3]
 [ext_resource path="res://levels/generator/settings/base_settings.tres" type="Resource" id=4]
+[ext_resource path="res://actors/flying_monkey/flying_monkey.tscn" type="PackedScene" id=5]
 
 [node name="TestLevel" type="Node2D"]
 
@@ -21,3 +22,6 @@ settings = ExtResource( 4 )
 
 [node name="Camera2D" type="Camera2D" parent="PlayerTopDown"]
 current = true
+
+[node name="FlyingMonkey" parent="." instance=ExtResource( 5 )]
+position = Vector2( 77, 52 )

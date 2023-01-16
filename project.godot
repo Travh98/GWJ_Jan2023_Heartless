@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "GeneratorSettings",
 "language": "GDScript",
 "path": "res://levels/generator/generater_settings.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "PlayerCharacter",
+"language": "GDScript",
+"path": "res://actors/player_character/player_character.gd"
 } ]
 _global_script_class_icons={
-"GeneratorSettings": ""
+"GeneratorSettings": "",
+"PlayerCharacter": ""
 }
 
 [application]
@@ -63,6 +69,10 @@ down={
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777234,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[mono]
+
+project/assembly_name="godot wild jam 53 Heartless"
 
 [physics]
 
