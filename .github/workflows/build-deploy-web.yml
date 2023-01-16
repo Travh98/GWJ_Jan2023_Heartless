@@ -7,11 +7,6 @@ on:
     branches: [ "main" ]
 
   workflow_dispatch:
-  
-env:
-  GODOT_VERSION: 3.5.1
-  EXPORT_NAME: heartless
-  PROJECT_PATH: /
 
 jobs:
   export-web:
@@ -32,14 +27,14 @@ jobs:
             godot_executable_download_url: https://github.com/godotengine/godot/releases/download/3.5.1-stable/Godot_v3.5.1-stable_linux_headless.64.zip
             godot_export_templates_download_url: https://github.com/godotengine/godot/releases/download/3.5.1-stable/Godot_v3.5.1-stable_export_templates.tpz
             relative_project_path: ./
-            archive_output: true
+            archive_output: false
         
         
         - name: Upload Artifact
           uses: actions/upload-artifact@v1
           with:
             name: web
-            path: build/web
+            path: /home/runner/.local/share/godot/builds/HTML5/
             
             
         - name: Install rsync 📚
@@ -49,6 +44,6 @@ jobs:
           uses: JamesIves/github-pages-deploy-action@releases/v4
           with:
             branch: gh-pages # The branch the action should deploy to.
-            folder: build/web # The folder the action should deploy.
+            folder: /home/runner/.local/share/godot/builds/HTML5/ # The folder the action should deploy.
             BUILD_FROM: main
 
