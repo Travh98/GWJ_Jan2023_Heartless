@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://levels/generator/generater_settings.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+walker_min_amount = 16
+walker_max_amount = 20
+walker_min_steps = 24
+walker_max_steps = 32
+walker_min_size = 2
+walker_max_size = 3
+walker_turn_chance = 0.5
+walker_split_chance = 0.1
+walker_min_split_amount = 1
+walker_max_split_amount = 2

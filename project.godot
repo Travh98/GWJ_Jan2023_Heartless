@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Resource",
+"class": "GeneratorSettings",
+"language": "GDScript",
+"path": "res://levels/generator/generater_settings.gd"
+} ]
+_global_script_class_icons={
+"GeneratorSettings": ""
+}
+
 [application]
 
 config/name="godot wild jam 53 Heartless"
