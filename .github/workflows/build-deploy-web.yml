@@ -41,6 +41,6 @@ jobs:
           uses: JamesIves/github-pages-deploy-action@v4.4.1
           with:
             branch: gh-pages # The branch the action should deploy to.
-            folder: /home/runner/.local/share/godot/builds/HTML5/ # The folder the action should deploy.
+            folder: ${{ steps.export.outputs.build_directory }} # The folder the action should deploy.
             BUILD_FROM: main
 
