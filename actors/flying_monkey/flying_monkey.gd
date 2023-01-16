@@ -24,8 +24,18 @@ onready var detection_collision: CollisionShape2D = $DetectionArea/DetectionArea
 onready var swoop_timer: Timer = $SwoopTimer
 onready var move_to_sprite: Sprite = $MoveToSprite # Used for debugging
 
+var rng = RandomNumberGenerator.new()
+var clockwise_rotation : bool = false
 
 func _ready():
+	rng.randomize()
+	var rand_dir_float = rng.randf_range(0.0, 1.0)
+	if(rand_dir_float > 0.5):
+		clockwise_rotation = true
+	else:
+		clockwise_rotation = false
+	delta_degrees = rng.randf_range(0.0, 359.0)
+	
 	detection_area.connect("body_entered", self, "on_detection_area_entered")
 	detection_collision.shape.set("radius", detection_radius)
 
@@ -45,7 +55,11 @@ func _process(delta):
 		States.Circle:
 			move_speed = 80
 			delta_degrees += delta
-			var desired_pos = Vector2(sin(delta_degrees * circling_rotate_speed) * attacking_distance, cos(delta_degrees * circling_rotate_speed) * attacking_distance) + target.global_transform.origin
+			var desired_pos = Vector2.ZERO
+			if(clockwise_rotation):
+				desired_pos = Vector2(sin(delta_degrees * circling_rotate_speed) * attacking_distance, cos(delta_degrees * circling_rotate_speed) * attacking_distance) + target.global_transform.origin
+			else:
+				desired_pos = Vector2(sin(delta_degrees * -circling_rotate_speed) * attacking_distance, cos(delta_degrees * -circling_rotate_speed) * attacking_distance) + target.global_transform.origin
 			move_to_sprite.global_transform.origin = desired_pos
 			direction = desired_pos - global_transform.origin;
 			if(swoop_timer.is_stopped()):
@@ -75,6 +89,6 @@ func state_change(new_state):
 	my_state = new_state 
 	
 func _on_SwoopTimer_timeout():
-	swoop_target = target.global_transform.origin # Monkey Attack Option A
+	swoop_target = target.global_transform.origin + Vector2(attacking_distance * sin(get_angle_to(target.global_transform.origin)), attacking_distance * cos(get_angle_to(target.global_transform.origin))) # Monkey Attack Option A
 	state_change(States.Swoop)
 	
