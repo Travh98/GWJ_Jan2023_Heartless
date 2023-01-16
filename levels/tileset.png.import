@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tinman-Sheet.png-acf4bb23fe7fad5d69258b801997d428.stex"
+path="res://.import/tileset.png-e8c31d62badf8873ea1ad70282e506b2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tinman-Sheet.png"
-dest_files=[ "res://.import/tinman-Sheet.png-acf4bb23fe7fad5d69258b801997d428.stex" ]
+source_file="res://levels/tileset.png"
+dest_files=[ "res://.import/tileset.png-e8c31d62badf8873ea1ad70282e506b2.stex" ]
 
 [params]
 

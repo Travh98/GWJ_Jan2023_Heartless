@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/arrows-sheet.png-b3b962a93e6cd3e9a1fcca0a406a56d3.stex"
+path="res://.import/arrows-sheet.png-a804f5c99f32d5557735e797a7d5a9ef.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/arrows-sheet.png"
-dest_files=[ "res://.import/arrows-sheet.png-b3b962a93e6cd3e9a1fcca0a406a56d3.stex" ]
+source_file="res://unused_assets/arrows-sheet.png"
+dest_files=[ "res://.import/arrows-sheet.png-a804f5c99f32d5557735e797a7d5a9ef.stex" ]
 
 [params]
 

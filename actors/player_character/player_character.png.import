@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tin-man-tile-set.png-3835c34796364508e8398412f9921c6e.stex"
+path="res://.import/player_character.png-fdc62f8c2494d6d4a26040d6ed80158d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tin-man-tile-set.png"
-dest_files=[ "res://.import/tin-man-tile-set.png-3835c34796364508e8398412f9921c6e.stex" ]
+source_file="res://actors/player_character/player_character.png"
+dest_files=[ "res://.import/player_character.png-fdc62f8c2494d6d4a26040d6ed80158d.stex" ]
 
 [params]
 
