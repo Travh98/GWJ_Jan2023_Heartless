@@ -10,8 +10,8 @@ on:
   
 env:
   GODOT_VERSION: 3.5.1
-  EXPORT_NAME: test-project
-  PROJECT_PATH: test-project
+  EXPORT_NAME: heartless
+  PROJECT_PATH: /
 
 jobs:
   export-web:
