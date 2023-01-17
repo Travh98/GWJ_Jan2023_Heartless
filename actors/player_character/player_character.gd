@@ -13,18 +13,23 @@ func _physics_process(delta: float) -> void:
 		Input.get_action_strength("right") - Input.get_action_strength("left"),
 		Input.get_action_strength("down") - Input.get_action_strength("up")
 	).normalized()
-	
+
 	move_and_slide(SPEED * input_direction)
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("right"):
+func _process(delta: float) -> void:
+	var mouse_direction := Vector2.ZERO.direction_to(get_local_mouse_position())
+	handle_mouse_direction(mouse_direction)
+
+
+func handle_mouse_direction(mouse_direction: Vector2) -> void:
+	if mouse_direction.x > 0.0:
 		_update_sprite(Vector2.RIGHT)
-	elif event.is_action_pressed("left"):
+	if mouse_direction.x < 0.0:
 		_update_sprite(Vector2.LEFT)
-	elif event.is_action_pressed("down"):
+	if mouse_direction.y > 0.85:
 		_update_sprite(Vector2.DOWN)
-	elif event.is_action_pressed("up"):
+	if mouse_direction.y < -0.85:
 		_update_sprite(Vector2.UP)
 
 
