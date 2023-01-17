@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://ux/health_hud/health_hud.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/healthbar/ozbar_progress_progress.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/healthbar/ozbar_progress_over.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/healthbar/ozbar_progress_under.png" type="Texture" id=4]
+
+[node name="HealthHUD" type="Node2D"]
+script = ExtResource( 1 )
+title_font_resource = "res://assets/fonts/PixelAE-Regular.ttf"
+panel_title = "Mana"
+title_height = 8
+title_text_color = Color( 0.0156863, 0.0117647, 0.109804, 1 )
+frame_color1 = Color( 0.121569, 0.494118, 0.976471, 1 )
+frame_color2 = Color( 0.403922, 0.027451, 0.027451, 1 )
+frame_top_left = Vector2( 3, 3 )
+frame_extent = Vector2( 80, 64 )
+
+[node name="ProgressHealthbar" type="TextureProgress" parent="."]
+margin_left = 38.0
+margin_top = 6.0
+margin_right = 80.0
+margin_bottom = 24.0
+value = 80.0
+texture_under = ExtResource( 4 )
+texture_over = ExtResource( 3 )
+texture_progress = ExtResource( 2 )
+nine_patch_stretch = true
