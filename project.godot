@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "PlayerCharacter",
 "language": "GDScript",
 "path": "res://actors/player_character/player_character.gd"
+}, {
+"base": "Node",
+"class": "PlayerStats",
+"language": "GDScript",
+"path": "res://actors/player_character/player_stats.gd"
 } ]
 _global_script_class_icons={
 "GeneratorSettings": "",
-"PlayerCharacter": ""
+"PlayerCharacter": "",
+"PlayerStats": ""
 }
 
 [application]
