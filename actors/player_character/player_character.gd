@@ -7,6 +7,8 @@ const SPEED := 128
 var velocity := Vector2.ZERO
 
 onready var animated_sprite: AnimatedSprite = $Sprite
+onready var axe_attack_scene = load("res://actors/axe_swing_attack.tscn")
+
 
 func _physics_process(delta: float) -> void:
 	var input_direction := Vector2(
@@ -15,6 +17,9 @@ func _physics_process(delta: float) -> void:
 	).normalized()
 
 	move_and_slide(SPEED * input_direction)
+	
+	if Input.is_action_just_pressed("attack"):
+		axe_attack()
 
 
 func _process(delta: float) -> void:
@@ -35,3 +40,9 @@ func handle_mouse_direction(mouse_direction: Vector2) -> void:
 
 func _update_sprite(direction: Vector2) -> void:
 	animated_sprite.animation = ANIMATION_DIRECTIONS[direction]
+
+func axe_attack() -> void:
+	var attack = axe_attack_scene.instance()
+	get_tree().root.get_child(0).add_child(attack) # Add attack to the first child of root (the Level itself)
+	attack.global_transform = global_transform
+	attack.rotation = get_angle_to(get_global_mouse_position())

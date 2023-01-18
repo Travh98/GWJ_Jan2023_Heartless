@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name FlyingMonkey
 
 var move_speed := 20
 var circling_rotate_speed := 0.5
@@ -67,11 +68,6 @@ func _process(delta):
 			
 		States.Swoop:
 			move_speed = 120
-			
-			# Two options here: 
-			# a: Have monkey swoop to a static position behind the player (try running through player, allowing player to dodge)
-			# b: Have monkey adjust movement to always hit player (if not stopped by player hitting them, almost a guarenteed hit)
-#			swoop_target = target.global_transform.origin # option B
 			
 			direction = swoop_target - transform.origin
 			if(swoop_target.distance_to(global_transform.origin) < 10):
