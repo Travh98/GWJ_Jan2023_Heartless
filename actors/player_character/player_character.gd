@@ -1,7 +1,7 @@
 class_name PlayerCharacter
 extends KinematicBody2D
 
-const SPEED := 128
+var walk_speed := 128
 var temporary_speed
 
 # Potentially modifyable stats
@@ -10,6 +10,8 @@ var attack_cooldown_secs = 0.5
 var dash_speed_modifier = 5 		# multiply speed by this
 var dash_cooldown_secs = 1
 var charge_attack_time_secs = 1
+var attack_damage = 50
+var attack_charged_modifier = 2
 
 
 var attack_ready : bool = true
@@ -28,6 +30,8 @@ onready var charge_attack_timer : Timer = get_node("ChargeAttackTimer")
 
 onready var crosshair : Crosshair = get_node("Crosshair")
 
+onready var player_stats : PlayerStats = get_node("Stats")
+
 func _ready():
 	dash_timer.connect("timeout", self, "dash_finished")
 	attack_cooldown_timer.connect("timeout", self, "attack_cooled_down")
@@ -38,7 +42,9 @@ func _ready():
 	charge_attack_timer.connect("timeout", self, "charged_attack_timeout")
 	charge_attack_timer.wait_time = charge_attack_time_secs
 	
-	temporary_speed = SPEED
+	temporary_speed = walk_speed
+	
+	player_stats.connect("stat_changed", self, "on_stat_changed")
 
 func _physics_process(delta: float) -> void:
 	var input_direction := Vector2(
@@ -121,6 +127,7 @@ func axe_attack() -> void:
 	attack.rotation = get_angle_to(get_global_mouse_position())
 	attack.global_transform.origin += Vector2(attack_range, 0).rotated(attack.rotation)
 	
+	attack.set_damage(attack_damage)
 	attack_ready = false
 	attack_cooldown_timer.start()
 	
@@ -132,7 +139,7 @@ func charged_axe_attack() -> void:
 	attack.global_transform.origin += Vector2(attack_range, 0).rotated(attack.rotation)
 	
 	# Charged attack
-	attack.set_damage(100)
+	attack.set_damage(attack_damage * attack_charged_modifier)
 	attack.set_moving_attack(true)
 	attack.scale *= 1.5
 	
@@ -141,14 +148,14 @@ func charged_axe_attack() -> void:
 	attack_cooldown_timer.start()
 	
 func dash() -> void:
-	temporary_speed = SPEED * dash_speed_modifier
+	temporary_speed = walk_speed * dash_speed_modifier
 	afterimage_emitter.emitting = true
 	dash_timer.start()
 	dash_ready = false
 	dash_cooldown_timer.start()
 	
 func dash_finished() -> void:
-	temporary_speed = SPEED
+	temporary_speed = walk_speed
 	afterimage_emitter.emitting = false
 	
 func attack_cooled_down() -> void:
@@ -162,3 +169,20 @@ func charged_attack_timeout() -> void:
 	# Whether its a sound effect or a sprite on the screen 
 	print("Charged attack is ready")
 	crosshair.setChargedAttackReady(true)
+	
+# stat_changed signal comes from PlayerStats component
+func on_stat_changed(stat_name, value) -> void:
+	if stat_name == "health":
+		# Set max health
+		pass
+	if stat_name == "walk_speed":
+		walk_speed = value
+	if stat_name == "attack_speed":
+		attack_cooldown_secs = value
+	if stat_name == "knockback":
+		# set knockback on attacks
+		pass
+	if stat_name == "damage":
+		attack_damage = value
+		
+
