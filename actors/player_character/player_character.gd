@@ -19,6 +19,8 @@ var velocity := Vector2.ZERO
 onready var animated_sprite: AnimatedSprite = $Sprite
 onready var axe_attack_scene = load("res://actors/axe_swing_attack.tscn")
 
+onready var afterimage_emitter : AfterimageEmitter = $AfterimageEmitter
+
 onready var dash_timer : Timer = get_node("DashTimer")
 onready var attack_cooldown_timer : Timer = get_node("AttackCooldownTimer")
 onready var dash_cooldown_timer : Timer = get_node("DashCooldownTimer")
@@ -131,12 +133,14 @@ func charged_axe_attack() -> void:
 	
 func dash() -> void:
 	temporary_speed = SPEED * dash_speed_modifier
+	afterimage_emitter.emitting = true
 	dash_timer.start()
 	dash_ready = false
 	dash_cooldown_timer.start()
 	
 func dash_finished() -> void:
 	temporary_speed = SPEED
+	afterimage_emitter.emitting = false
 	
 func attack_cooled_down() -> void:
 	attack_ready = true

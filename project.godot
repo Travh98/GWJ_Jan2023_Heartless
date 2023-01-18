@@ -9,6 +9,16 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "Afterimage",
+"language": "GDScript",
+"path": "res://effects/afterimage/afterimage.gd"
+}, {
+"base": "Node2D",
+"class": "AfterimageEmitter",
+"language": "GDScript",
+"path": "res://effects/afterimage/afterimage_emitter.gd"
+}, {
 "base": "Area2D",
 "class": "AxeSwingAttack",
 "language": "GDScript",
@@ -35,6 +45,8 @@ _global_script_classes=[ {
 "path": "res://actors/player_character/player_stats.gd"
 } ]
 _global_script_class_icons={
+"Afterimage": "",
+"AfterimageEmitter": "",
 "AxeSwingAttack": "",
 "FlyingMonkey": "",
 "GeneratorSettings": "",
