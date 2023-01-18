@@ -4,6 +4,7 @@ class_name PlayerCharacter
 const ANIMATION_DIRECTIONS := {Vector2.RIGHT: "right", Vector2.LEFT: "left", Vector2.UP: "up", Vector2.DOWN: "down"}
 const SPEED := 128
 var temporary_speed
+var attack_range = 35
 
 var velocity := Vector2.ZERO
 
@@ -52,8 +53,9 @@ func _update_sprite(direction: Vector2) -> void:
 func axe_attack() -> void:
 	var attack = axe_attack_scene.instance()
 	get_tree().root.get_child(0).add_child(attack) # Add attack to the first child of root (the Level itself)
-	attack.global_transform = global_transform
+	attack.global_transform.origin = global_transform.origin + Vector2(0, -16) # 16 is half the height of player sprite
 	attack.rotation = get_angle_to(get_global_mouse_position())
+	attack.global_transform.origin += Vector2(attack_range, 0).rotated(attack.rotation)
 	
 func dash() -> void:
 	temporary_speed = SPEED * 5
