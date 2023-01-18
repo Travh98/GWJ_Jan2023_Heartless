@@ -1,7 +1,6 @@
 class_name PlayerCharacter
 extends KinematicBody2D
 
-const ANIMATION_DIRECTIONS := {Vector2.RIGHT: "right", Vector2.LEFT: "left", Vector2.UP: "up", Vector2.DOWN: "down"}
 const SPEED := 128
 var temporary_speed
 
@@ -85,16 +84,25 @@ func _process(delta: float) -> void:
 
 func handle_mouse_direction(mouse_direction: Vector2) -> void:
 	if mouse_direction.x > 0.0:
-		_update_sprite(Vector2.RIGHT)
+		_update_sprite("right")
+	if mouse_direction.y < -0.4 and mouse_direction.x > 0.0:
+		_update_sprite("up_right")
+	if mouse_direction.y < -0.9:
+		_update_sprite("up")
 	if mouse_direction.x < 0.0:
-		_update_sprite(Vector2.LEFT)
-	if mouse_direction.y > 0.85:
-		_update_sprite(Vector2.DOWN)
-	if mouse_direction.y < -0.85:
-		_update_sprite(Vector2.UP)
+		_update_sprite("left")
+	if mouse_direction.y < -0.4 and mouse_direction.x < 0.0:
+		_update_sprite("up_left")
+	if mouse_direction.y > 0.4 and mouse_direction.x < 0.0:
+		_update_sprite("down_left")
+	if mouse_direction.y > 0.4 and mouse_direction.x > 0.0:
+		_update_sprite("down_right")
+	if mouse_direction.y > 0.9:
+		_update_sprite("down")
 
-func _update_sprite(direction: Vector2) -> void:
-	animated_sprite.animation = ANIMATION_DIRECTIONS[direction]
+func _update_sprite(direction: String) -> void:
+	if(animated_sprite.animation != direction):
+		animated_sprite.animation = direction
 
 func axe_attack() -> void:
 	var attack = axe_attack_scene.instance()
