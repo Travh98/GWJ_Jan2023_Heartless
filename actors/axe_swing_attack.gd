@@ -1,5 +1,5 @@
-extends Area2D
 class_name AxeSwingAttack
+extends Area2D
 
 var despawn_timer
 export var move_speed = 200

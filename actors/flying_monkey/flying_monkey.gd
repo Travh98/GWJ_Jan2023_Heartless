@@ -1,5 +1,5 @@
-extends KinematicBody2D
 class_name FlyingMonkey
+extends KinematicBody2D
 
 var move_speed := 20
 var circling_rotate_speed := 0.5
