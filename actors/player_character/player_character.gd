@@ -64,8 +64,7 @@ func _physics_process(delta: float) -> void:
 	
 
 	if Input.is_action_just_pressed("attack"):
-		charge_attack_timer.start()
-		print("Charging attack")
+		charge_attack_timer.start() 		# Start charging attack
 		
 	if Input.is_action_just_released("attack"):
 		if charge_attack_timer.time_left != 0:
@@ -74,8 +73,8 @@ func _physics_process(delta: float) -> void:
 			if attack_ready:
 				axe_attack()
 		else:
+			# since time left is zero, we have fully charged
 			charged_axe_attack()
-			print("Doing the charged attack")
 				
 	if Input.is_action_just_pressed("dash") and dash_ready:
 		dash()
@@ -138,4 +137,6 @@ func dash_cooled_down() -> void:
 	dash_ready = true
 	
 func charged_attack_timeout() -> void:
+	# TODO Here we should have some indicator to let the player know their charged attack is ready
+	# Whether its a sound effect or a sprite on the screen 
 	print("Charged attack is ready")
