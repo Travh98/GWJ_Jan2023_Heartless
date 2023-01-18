@@ -26,6 +26,8 @@ onready var attack_cooldown_timer : Timer = get_node("AttackCooldownTimer")
 onready var dash_cooldown_timer : Timer = get_node("DashCooldownTimer")
 onready var charge_attack_timer : Timer = get_node("ChargeAttackTimer")
 
+onready var crosshair : Crosshair = get_node("Crosshair")
+
 func _ready():
 	dash_timer.connect("timeout", self, "dash_finished")
 	attack_cooldown_timer.connect("timeout", self, "attack_cooled_down")
@@ -65,6 +67,7 @@ func _physics_process(delta: float) -> void:
 	
 
 	if Input.is_action_just_pressed("attack"):
+		Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 		charge_attack_timer.start() 		# Start charging attack
 		
 	if Input.is_action_just_released("attack"):
@@ -78,7 +81,11 @@ func _physics_process(delta: float) -> void:
 			charged_axe_attack()
 				
 	if Input.is_action_just_pressed("dash") and dash_ready:
+		Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 		dash()
+		
+	if Input.is_action_just_pressed("escape"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _process(delta: float) -> void:
 	var mouse_direction := Vector2.ZERO.direction_to(get_local_mouse_position())
@@ -129,6 +136,7 @@ func charged_axe_attack() -> void:
 	attack.scale *= 1.5
 	
 	attack_ready = false
+	crosshair.setChargedAttackReady(false)
 	attack_cooldown_timer.start()
 	
 func dash() -> void:
@@ -152,3 +160,4 @@ func charged_attack_timeout() -> void:
 	# TODO Here we should have some indicator to let the player know their charged attack is ready
 	# Whether its a sound effect or a sprite on the screen 
 	print("Charged attack is ready")
+	crosshair.setChargedAttackReady(true)

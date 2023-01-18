@@ -1,44 +1,33 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://actors/player_character/player_character.gd" type="Script" id=1]
 [ext_resource path="res://actors/player_character/player_character.png" type="Texture" id=2]
 [ext_resource path="res://actors/player_character/player_stats.gd" type="Script" id=3]
 [ext_resource path="res://effects/afterimage/afterimage_emitter.tscn" type="PackedScene" id=4]
 
-[sub_resource type="AtlasTexture" id=11]
-atlas = ExtResource( 2 )
-region = Rect2( 240, 0, 40, 40 )
-
-[sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 2 )
-region = Rect2( 80, 0, 40, 40 )
-
-[sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 2 )
-region = Rect2( 160, 0, 40, 40 )
-
 [sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 40, 40 )
 
-[sub_resource type="AtlasTexture" id=16]
-atlas = ExtResource( 2 )
-region = Rect2( 200, 0, 40, 40 )
-
-[sub_resource type="AtlasTexture" id=14]
-atlas = ExtResource( 2 )
-region = Rect2( 280, 0, 40, 40 )
-
-[sub_resource type="AtlasTexture" id=17]
+[sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 2 )
 region = Rect2( 120, 0, 40, 40 )
 
-[sub_resource type="AtlasTexture" id=15]
+[sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 2 )
 region = Rect2( 40, 0, 40, 40 )
 
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 2 )
+region = Rect2( 80, 0, 40, 40 )
+
 [sub_resource type="SpriteFrames" id=5]
 animations = [ {
+"frames": [ SubResource( 10 ) ],
+"loop": true,
+"name": "down",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 11 ) ],
 "loop": true,
 "name": "left",
@@ -49,34 +38,9 @@ animations = [ {
 "name": "right",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 13 ) ],
+"frames": [ SubResource( 9 ) ],
 "loop": true,
 "name": "up",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 10 ) ],
-"loop": true,
-"name": "down",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 16 ) ],
-"loop": true,
-"name": "up_left",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 14 ) ],
-"loop": true,
-"name": "down_left",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 17 ) ],
-"loop": true,
-"name": "up_right",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 15 ) ],
-"loop": true,
-"name": "down_right",
 "speed": 5.0
 } ]
 
@@ -92,7 +56,6 @@ script = ExtResource( 1 )
 position = Vector2( 0, -20 )
 z_index = 1
 frames = SubResource( 5 )
-animation = "up_right"
 
 [node name="AfterimageEmitter" parent="." instance=ExtResource( 4 )]
 position = Vector2( 0, -20 )
