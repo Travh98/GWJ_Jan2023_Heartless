@@ -8,9 +8,12 @@ var temporary_speed
 # Potentially modifyable stats
 var attack_range = 35
 var attack_cooldown_secs = 0.5
+var dash_speed = 5
+var dash_cooldown_secs = 1
 
 
 var attack_ready : bool = true
+var dash_ready : bool = true
 var velocity := Vector2.ZERO
 
 onready var animated_sprite: AnimatedSprite = $Sprite
@@ -18,11 +21,14 @@ onready var axe_attack_scene = load("res://actors/axe_swing_attack.tscn")
 
 onready var dash_timer : Timer = get_node("DashTimer")
 onready var attack_cooldown_timer : Timer = get_node("AttackCooldownTimer")
+onready var dash_cooldown_timer : Timer = get_node("DashCooldownTimer")
 
 func _ready():
 	dash_timer.connect("timeout", self, "dash_finished")
 	attack_cooldown_timer.connect("timeout", self, "attack_cooled_down")
-	attack_cooldown_timer.wait_time = attack_cooldown_secs
+	attack_cooldown_timer.wait_time = attack_cooldown_secs	
+	dash_cooldown_timer.connect("timeout", self, "dash_cooled_down")
+	dash_cooldown_timer.wait_time = dash_cooldown_secs
 	temporary_speed = SPEED
 
 func _physics_process(delta: float) -> void:
@@ -35,7 +41,7 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("attack") and attack_ready:
 		axe_attack()
-	if Input.is_action_just_pressed("dash"):
+	if Input.is_action_just_pressed("dash") and dash_ready:
 		dash()
 
 func _process(delta: float) -> void:
@@ -68,9 +74,14 @@ func axe_attack() -> void:
 func dash() -> void:
 	temporary_speed = SPEED * 5
 	dash_timer.start()
+	dash_ready = false
+	dash_cooldown_timer.start()
 	
 func dash_finished() -> void:
 	temporary_speed = SPEED
 	
 func attack_cooled_down() -> void:
 	attack_ready = true
+	
+func dash_cooled_down() -> void:
+	dash_ready = true
