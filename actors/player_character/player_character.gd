@@ -8,8 +8,9 @@ var temporary_speed
 # Potentially modifyable stats
 var attack_range = 35
 var attack_cooldown_secs = 0.5
-var dash_speed = 5
+var dash_speed_modifier = 5 		# multiply speed by this
 var dash_cooldown_secs = 1
+var charge_attack_time_secs = 1
 
 
 var attack_ready : bool = true
@@ -22,6 +23,7 @@ onready var axe_attack_scene = load("res://actors/axe_swing_attack.tscn")
 onready var dash_timer : Timer = get_node("DashTimer")
 onready var attack_cooldown_timer : Timer = get_node("AttackCooldownTimer")
 onready var dash_cooldown_timer : Timer = get_node("DashCooldownTimer")
+onready var charge_attack_timer : Timer = get_node("ChargeAttackTimer")
 
 func _ready():
 	dash_timer.connect("timeout", self, "dash_finished")
@@ -29,6 +31,10 @@ func _ready():
 	attack_cooldown_timer.wait_time = attack_cooldown_secs	
 	dash_cooldown_timer.connect("timeout", self, "dash_cooled_down")
 	dash_cooldown_timer.wait_time = dash_cooldown_secs
+	
+	charge_attack_timer.connect("timeout", self, "charged_attack_timeout")
+	charge_attack_timer.wait_time = charge_attack_time_secs
+	
 	temporary_speed = SPEED
 
 func _physics_process(delta: float) -> void:
@@ -39,8 +45,38 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide(temporary_speed * input_direction)
 	
-	if Input.is_action_just_pressed("attack") and attack_ready:
-		axe_attack()
+#	if(Input.IsActionJustPressed("melee"))
+#		{
+#			_throwTimer.Start();
+#		}
+#		if(Input.IsActionJustReleased("melee"))
+#		{
+#			if(_throwTimer.TimeLeft != 0)
+#			{
+#				// Melee attack
+#			}
+#			else
+#			{
+#				_inventory.ThrowHeldItem();
+#			}
+#
+#		}
+	
+
+	if Input.is_action_just_pressed("attack"):
+		charge_attack_timer.start()
+		print("Charging attack")
+		
+	if Input.is_action_just_released("attack"):
+		if charge_attack_timer.time_left != 0:
+			# Did not charge long enough, try a regular attack
+			charge_attack_timer.stop()
+			if attack_ready:
+				axe_attack()
+		else:
+			charged_axe_attack()
+			print("Doing the charged attack")
+				
 	if Input.is_action_just_pressed("dash") and dash_ready:
 		dash()
 
@@ -71,8 +107,23 @@ func axe_attack() -> void:
 	attack_ready = false
 	attack_cooldown_timer.start()
 	
+func charged_axe_attack() -> void:
+	var attack : AxeSwingAttack = axe_attack_scene.instance()
+	get_tree().root.get_child(0).add_child(attack) # Add attack to the first child of root (the Level itself)
+	attack.global_transform.origin = global_transform.origin + Vector2(0, -16) # 16 is half the height of player sprite
+	attack.rotation = get_angle_to(get_global_mouse_position())
+	attack.global_transform.origin += Vector2(attack_range, 0).rotated(attack.rotation)
+	
+	# Charged attack
+	attack.set_damage(100)
+	attack.set_moving_attack(true)
+	attack.scale *= 1.5
+	
+	attack_ready = false
+	attack_cooldown_timer.start()
+	
 func dash() -> void:
-	temporary_speed = SPEED * 5
+	temporary_speed = SPEED * dash_speed_modifier
 	dash_timer.start()
 	dash_ready = false
 	dash_cooldown_timer.start()
@@ -85,3 +136,6 @@ func attack_cooled_down() -> void:
 	
 func dash_cooled_down() -> void:
 	dash_ready = true
+	
+func charged_attack_timeout() -> void:
+	print("Charged attack is ready")

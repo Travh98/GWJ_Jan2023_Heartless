@@ -25,7 +25,7 @@ onready var detection_collision: CollisionShape2D = $DetectionArea/DetectionArea
 onready var swoop_timer: Timer = $SwoopTimer
 onready var move_to_sprite: Sprite = $MoveToSprite # Used for debugging
 
-var rng = RandomNumberGenerator.new()
+onready var rng = RandomNumberGenerator.new()
 var clockwise_rotation : bool = false
 
 func _ready():
@@ -77,8 +77,9 @@ func _process(delta):
 	
 # When player enters detection area, set player as our target
 func on_detection_area_entered(body: Node2D):
-	if(body is PlayerCharacter): 
-		target = body
+#	if(body is PlayerCharacter): 
+#		target = body
+	pass
 	
 func state_change(new_state):
 #	print("Changing state to:", new_state)
@@ -87,4 +88,3 @@ func state_change(new_state):
 func _on_SwoopTimer_timeout():
 	swoop_target = target.global_transform.origin + Vector2(attacking_distance * sin(get_angle_to(target.global_transform.origin)), attacking_distance * cos(get_angle_to(target.global_transform.origin))) # Monkey Attack Option A
 	state_change(States.Swoop)
-	

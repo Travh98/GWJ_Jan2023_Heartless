@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Area2D",
+"class": "AxeSwingAttack",
+"language": "GDScript",
+"path": "res://actors/axe_swing_attack.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "FlyingMonkey",
 "language": "GDScript",
@@ -30,6 +35,7 @@ _global_script_classes=[ {
 "path": "res://actors/player_character/player_stats.gd"
 } ]
 _global_script_class_icons={
+"AxeSwingAttack": "",
 "FlyingMonkey": "",
 "GeneratorSettings": "",
 "PlayerCharacter": "",
