@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name FlyingMonkey
 
 var move_speed := 20
 var circling_rotate_speed := 0.5
@@ -24,7 +25,7 @@ onready var detection_collision: CollisionShape2D = $DetectionArea/DetectionArea
 onready var swoop_timer: Timer = $SwoopTimer
 onready var move_to_sprite: Sprite = $MoveToSprite # Used for debugging
 
-var rng = RandomNumberGenerator.new()
+onready var rng = RandomNumberGenerator.new()
 var clockwise_rotation : bool = false
 
 func _ready():
@@ -68,11 +69,6 @@ func _process(delta):
 		States.Swoop:
 			move_speed = 120
 			
-			# Two options here: 
-			# a: Have monkey swoop to a static position behind the player (try running through player, allowing player to dodge)
-			# b: Have monkey adjust movement to always hit player (if not stopped by player hitting them, almost a guarenteed hit)
-#			swoop_target = target.global_transform.origin # option B
-			
 			direction = swoop_target - transform.origin
 			if(swoop_target.distance_to(global_transform.origin) < 10):
 				state_change(States.Circle)
@@ -81,8 +77,10 @@ func _process(delta):
 	
 # When player enters detection area, set player as our target
 func on_detection_area_entered(body: Node2D):
-	if(body is PlayerCharacter): 
-		target = body
+	# I'm removing this if statement because the Static Typing seems to break gdscript
+	# For now we can assume that the detection area will only collide with Player objects using the 2D Physics Layers
+#	if(body.get_lay is PlayerCharacter): 
+	target = body
 	
 func state_change(new_state):
 #	print("Changing state to:", new_state)
@@ -91,4 +89,3 @@ func state_change(new_state):
 func _on_SwoopTimer_timeout():
 	swoop_target = target.global_transform.origin + Vector2(attacking_distance * sin(get_angle_to(target.global_transform.origin)), attacking_distance * cos(get_angle_to(target.global_transform.origin))) # Monkey Attack Option A
 	state_change(States.Swoop)
-	
