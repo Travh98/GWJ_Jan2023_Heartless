@@ -3,12 +3,18 @@ class_name PlayerCharacter
 
 const ANIMATION_DIRECTIONS := {Vector2.RIGHT: "right", Vector2.LEFT: "left", Vector2.UP: "up", Vector2.DOWN: "down"}
 const SPEED := 128
+var temporary_speed
 
 var velocity := Vector2.ZERO
 
 onready var animated_sprite: AnimatedSprite = $Sprite
 onready var axe_attack_scene = load("res://actors/axe_swing_attack.tscn")
 
+onready var dash_timer : Timer = get_node("DashTimer")
+
+func _ready():
+	dash_timer.connect("timeout", self, "dash_finished")
+	temporary_speed = SPEED
 
 func _physics_process(delta: float) -> void:
 	var input_direction := Vector2(
@@ -16,10 +22,12 @@ func _physics_process(delta: float) -> void:
 		Input.get_action_strength("down") - Input.get_action_strength("up")
 	).normalized()
 
-	move_and_slide(SPEED * input_direction)
+	move_and_slide(temporary_speed * input_direction)
 	
 	if Input.is_action_just_pressed("attack"):
 		axe_attack()
+	if Input.is_action_just_pressed("dash"):
+		dash()
 
 
 func _process(delta: float) -> void:
@@ -46,3 +54,10 @@ func axe_attack() -> void:
 	get_tree().root.get_child(0).add_child(attack) # Add attack to the first child of root (the Level itself)
 	attack.global_transform = global_transform
 	attack.rotation = get_angle_to(get_global_mouse_position())
+	
+func dash() -> void:
+	temporary_speed = SPEED * 5
+	dash_timer.start()
+	
+func dash_finished() -> void:
+	temporary_speed = SPEED
