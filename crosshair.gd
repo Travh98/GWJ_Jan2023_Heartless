@@ -13,7 +13,7 @@ func _ready():
 	# Changes only the arrow shape of the cursor.
 	# This is similar to changing it in the project settings.
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-	Input.set_custom_mouse_cursor(crosshair_sprite)
+	Input.set_custom_mouse_cursor(crosshair_sprite, Input.CURSOR_ARROW, Vector2(4,4))
 
 func _process(delta):
 	self.global_position = get_global_mouse_position() 

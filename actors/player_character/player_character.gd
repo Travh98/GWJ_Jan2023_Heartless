@@ -67,7 +67,7 @@ func _physics_process(delta: float) -> void:
 	
 
 	if Input.is_action_just_pressed("attack"):
-		Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 		charge_attack_timer.start() 		# Start charging attack
 		
 	if Input.is_action_just_released("attack"):
@@ -81,11 +81,12 @@ func _physics_process(delta: float) -> void:
 			charged_axe_attack()
 				
 	if Input.is_action_just_pressed("dash") and dash_ready:
-		Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 		dash()
 		
 	if Input.is_action_just_pressed("escape"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		pass
 
 func _process(delta: float) -> void:
 	var mouse_direction := Vector2.ZERO.direction_to(get_local_mouse_position())

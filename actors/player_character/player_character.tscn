@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://actors/player_character/player_character.gd" type="Script" id=1]
 [ext_resource path="res://actors/player_character/player_character.png" type="Texture" id=2]
@@ -10,17 +10,33 @@
 atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 40, 40 )
 
-[sub_resource type="AtlasTexture" id=11]
+[sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 2 )
-region = Rect2( 120, 0, 40, 40 )
+region = Rect2( 280, 0, 40, 40 )
 
 [sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 2 )
 region = Rect2( 40, 0, 40, 40 )
 
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 2 )
+region = Rect2( 240, 0, 40, 40 )
+
 [sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 2 )
 region = Rect2( 80, 0, 40, 40 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 2 )
+region = Rect2( 160, 0, 40, 40 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 2 )
+region = Rect2( 200, 0, 40, 40 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 2 )
+region = Rect2( 120, 0, 40, 40 )
 
 [sub_resource type="SpriteFrames" id=5]
 animations = [ {
@@ -29,19 +45,39 @@ animations = [ {
 "name": "down",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 11 ) ],
+"frames": [ SubResource( 17 ) ],
 "loop": true,
-"name": "left",
+"name": "down_left",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 12 ) ],
 "loop": true,
-"name": "right",
+"name": "down_right",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 14 ) ],
+"loop": true,
+"name": "left",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 9 ) ],
 "loop": true,
+"name": "right",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 15 ) ],
+"loop": true,
 "name": "up",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 16 ) ],
+"loop": true,
+"name": "up_left",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 13 ) ],
+"loop": true,
+"name": "up_right",
 "speed": 5.0
 } ]
 
@@ -57,6 +93,7 @@ script = ExtResource( 1 )
 position = Vector2( 0, -20 )
 z_index = 1
 frames = SubResource( 5 )
+animation = "down_left"
 
 [node name="AfterimageEmitter" parent="." instance=ExtResource( 4 )]
 position = Vector2( 0, -20 )
