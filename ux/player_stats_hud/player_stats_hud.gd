@@ -23,6 +23,7 @@ class PlayerStatsFrame:
 	var frame_top_left : Vector2
 	var frame_extent : Vector2
 	var portrait_offset : Vector2
+	var queued_sprites : Dictionary
 	
 	func assignFont(tag : String, fontObject : Font):
 		if (tag != null):
@@ -110,7 +111,12 @@ class PlayerStatsFrame:
 				draw_border(frame_top_left, frame_top_left + frame_extent, frame_color, 2)
 			if show_portrait:
 				draw_sprite_image(null, portrait_image_resource, sprite_position)
-		
+		for img in queued_sprites:
+			draw_sprite_image(null, img, queued_sprites[img])
+
+	func queue_draw_sprite(image_res : String, sprite_pos : Vector2) -> void:
+		queued_sprites[image_res] = sprite_pos
+
 	func _ready():
 		set_process(true)
 		
@@ -133,6 +139,22 @@ export (Dictionary) var items_collected
 
 var player_hud : PlayerStatsFrame
 const items_placement : Dictionary = { "oil-can" : Vector2(4, 2), "shield" : Vector2(24, 2) }
+const items_image_resource : Dictionary = { "oil-can" : "res://assets/images/stats/oil-can.png",
+"shield" : "res://assets/images/stats/shield.png"}
+
+func process_items(playerFrame : PlayerStatsFrame) -> void:
+	var image_resource
+	var sprite_position : Vector2
+	if items_collected:
+		if items_collected.has("oil-can"):
+			sprite_position = items_placement["oil-can"]
+			image_resource = items_image_resource["oil-can"]
+			#playerFrame.draw_sprite_image(null, image_resource, sprite_position)
+			playerFrame.queue_draw_sprite(image_resource, sprite_position)
+		if items_collected.has("shield"):
+			sprite_position = items_placement["shield"]
+			image_resource = items_image_resource["shield"]
+			playerFrame.queue_draw_sprite(image_resource, sprite_position)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -151,4 +173,5 @@ func _ready():
 	player_hud.character_title = character_title
 	player_hud.frame_top_left = frame_top_left
 	player_hud.frame_extent = frame_extent
+	process_items(player_hud)
 	set_process(true)
