@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ComicCutscene/intro_splash.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/Wildling-Wallpaper 1080.png" type="Texture" id=2]
+
+[node name="IntroSplash1" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+next_scene_path = "res://ComicCutscene/intro_splash2.tscn"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+
+[node name="NextSceneTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true

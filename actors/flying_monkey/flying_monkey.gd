@@ -79,7 +79,7 @@ func _process(delta):
 func on_detection_area_entered(body: Node2D):
 	# I'm removing this if statement because the Static Typing seems to break gdscript
 	# For now we can assume that the detection area will only collide with Player objects using the 2D Physics Layers
-#	if(body.get_lay is PlayerCharacter): 
+#	if(body is PlayerCharacter): 
 	target = body
 	
 func state_change(new_state):

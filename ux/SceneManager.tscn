@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://ux/TransitionScreen.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ux/scene_manager.gd" type="Script" id=2]
+[ext_resource path="res://ComicCutscene/intro_splash1.tscn" type="PackedScene" id=3]
+
+[node name="SceneManager" type="Node"]
+script = ExtResource( 2 )
+
+[node name="CurrentScene" type="Node" parent="."]
+
+[node name="IntroSplash1" parent="CurrentScene" instance=ExtResource( 3 )]
+
+[node name="TransitionScreen" parent="." instance=ExtResource( 1 )]
