@@ -33,6 +33,7 @@ onready var crosshair : Crosshair = get_node("Crosshair")
 onready var player_stats : PlayerStats = get_node("Stats")
 
 func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	dash_timer.connect("timeout", self, "dash_finished")
 	attack_cooldown_timer.connect("timeout", self, "attack_cooled_down")
 	attack_cooldown_timer.wait_time = attack_cooldown_secs	
@@ -52,25 +53,7 @@ func _physics_process(delta: float) -> void:
 		Input.get_action_strength("down") - Input.get_action_strength("up")
 	).normalized()
 
-	move_and_slide(temporary_speed * input_direction)
-	
-#	if(Input.IsActionJustPressed("melee"))
-#		{
-#			_throwTimer.Start();
-#		}
-#		if(Input.IsActionJustReleased("melee"))
-#		{
-#			if(_throwTimer.TimeLeft != 0)
-#			{
-#				// Melee attack
-#			}
-#			else
-#			{
-#				_inventory.ThrowHeldItem();
-#			}
-#
-#		}
-	
+	move_and_slide(temporary_speed * input_direction)	
 
 	if Input.is_action_just_pressed("attack"):
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
@@ -89,10 +72,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("dash") and dash_ready:
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 		dash()
-		
-	if Input.is_action_just_pressed("escape"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		pass
+	
 
 func _process(delta: float) -> void:
 	var mouse_direction := Vector2.ZERO.direction_to(get_local_mouse_position())
