@@ -13,6 +13,10 @@ frame_color = Color( 0.788235, 0.0313726, 0.0313726, 1 )
 frame_top_left = Vector2( 4, 4 )
 frame_extent = Vector2( 112, 82 )
 portrait_offset = Vector2( 36, 18 )
+items_collected = {
+"oil-can": Vector2( 120, 90 ),
+"shield": Vector2( 270, 165 )
+}
 
 [node name="SceneTimer" type="Timer" parent="."]
 wait_time = 0.1

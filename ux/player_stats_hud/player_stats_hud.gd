@@ -3,7 +3,7 @@ extends Node2D
 class PlayerStatsFrame:
 	extends Node2D
 	var test_mode : bool = false
-	var timestamp_class = preload("res://globals/timestamp.gd")
+	var timestamp_class = preload("res://ux/general/timestamp.gd")
 	var nb_points = 48
 	var line_color = Color(0, 0, 0)
 	var imageFolder : String
@@ -17,6 +17,8 @@ class PlayerStatsFrame:
 	var character_title : String
 	var title_text_color : Color
 	var title_height : int
+	var show_frame : bool
+	var show_portrait : bool
 	var frame_color : Color
 	var frame_top_left : Vector2
 	var frame_extent : Vector2
@@ -104,8 +106,10 @@ class PlayerStatsFrame:
 			charDisplayFont.font_data = appInfoFontData
 			assignFont("characterDisplay", charDisplayFont)
 			draw_text(portrait_offset, "characterDisplay", title_text_color, character_title)
-			draw_border(frame_top_left, frame_top_left + frame_extent, frame_color, 2)
-			draw_sprite_image(null, portrait_image_resource, sprite_position)
+			if show_frame:
+				draw_border(frame_top_left, frame_top_left + frame_extent, frame_color, 2)
+			if show_portrait:
+				draw_sprite_image(null, portrait_image_resource, sprite_position)
 		
 	func _ready():
 		set_process(true)
@@ -118,13 +122,17 @@ export (String) var title_font_resource
 export (String) var character_title
 export (int) var title_height
 export (Color) var title_text_color
+export (bool) var show_frame = false
+export (bool) var show_portrait = true
 export (Color) var frame_color
 export (Vector2) var frame_top_left
 export (Vector2) var frame_extent
 export (Vector2) var portrait_offset
 export (Dictionary) var player_stats
+export (Dictionary) var items_collected
 
 var player_hud : PlayerStatsFrame
+const items_placement : Dictionary = { "oil-can" : Vector2(4, 2), "shield" : Vector2(24, 2) }
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -134,6 +142,8 @@ func _ready():
 		add_child(player_hud)
 	player_hud.portrait_image_resource = portrait_image_resource
 	player_hud.portrait_offset = portrait_offset
+	player_hud.show_frame = show_frame
+	player_hud.show_portrait = show_portrait
 	player_hud.title_font_resource = title_font_resource
 	player_hud.title_text_color = title_text_color
 	player_hud.title_height = title_height
