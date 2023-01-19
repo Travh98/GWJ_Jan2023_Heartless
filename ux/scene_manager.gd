@@ -12,7 +12,10 @@ func _process(delta):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 	if Input.is_action_just_pressed("fullscreen"):
-		OS.window_fullscreen = !OS.window_fullscreen;
+		if OS.is_window_fullscreen():
+			OS.set_window_fullscreen(false)
+		else:
+			OS.set_window_fullscreen(true)
 		
 	if Input.is_action_just_pressed("restart"):
 		get_tree().reload_current_scene();

@@ -41,22 +41,14 @@ margin_bottom = 124.0
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
 margin_right = 64.0
-margin_bottom = 32.0
+margin_bottom = 56.0
 size_flags_vertical = 3
 
 [node name="NextButton" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 modulate = Color( 0.219608, 1, 0, 1 )
-margin_top = 36.0
-margin_right = 64.0
-margin_bottom = 100.0
-texture_normal = ExtResource( 1 )
-
-[node name="NextButton1" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-margin_top = 104.0
+margin_top = 60.0
 margin_right = 64.0
 margin_bottom = 124.0
-text = "NEXT"
+texture_normal = ExtResource( 1 )
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/NextButton" to="." method="_on_NextButton_pressed"]
-[connection signal="button_down" from="MarginContainer/HBoxContainer/VBoxContainer/NextButton1" to="." method="_on_NextButton1_button_down"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/NextButton1" to="." method="_on_NextButton1_pressed"]

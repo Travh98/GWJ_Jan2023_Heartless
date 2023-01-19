@@ -10,14 +10,4 @@ func _ready():
 
 func _on_NextButton_pressed():
 	print("comic button pressed")
-	get_tree().change_scene(next_scene_path)
-
-
-func _on_NextButton1_pressed():
-	print("comic button pressed")
-	get_tree().change_scene(next_scene_path)
-
-
-func _on_NextButton1_button_down():
-	print("comic button pressed")
-	get_tree().change_scene(next_scene_path)
+	get_tree().root.get_child(0).change_scene(next_scene_path)

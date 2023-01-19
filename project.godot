@@ -68,7 +68,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="godot wild jam 53 Heartless"
+config/name="Heartless"
 run/main_scene="res://ux/SceneManager.tscn"
 config/icon="res://assets/images/heartless_icon.png"
 
