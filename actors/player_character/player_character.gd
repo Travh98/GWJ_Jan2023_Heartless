@@ -55,6 +55,12 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide(temporary_speed * input_direction)	
 
+	if input_direction.x != 0.0 or input_direction.y != 0.0:
+		animated_sprite.play()
+	else:
+		animated_sprite.stop()
+		animated_sprite.frame = 0
+
 	if Input.is_action_just_pressed("attack"):
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 		charge_attack_timer.start() 		# Start charging attack
@@ -79,22 +85,22 @@ func _process(delta: float) -> void:
 	handle_mouse_direction(mouse_direction)
 
 func handle_mouse_direction(mouse_direction: Vector2) -> void:
-	if mouse_direction.x > 0.0:
-		_update_sprite("right")
-	if mouse_direction.y < -0.4 and mouse_direction.x > 0.0:
-		_update_sprite("up_right")
 	if mouse_direction.y < -0.9:
 		_update_sprite("up")
-	if mouse_direction.x < 0.0:
-		_update_sprite("left")
-	if mouse_direction.y < -0.4 and mouse_direction.x < 0.0:
-		_update_sprite("up_left")
-	if mouse_direction.y > 0.4 and mouse_direction.x < 0.0:
-		_update_sprite("down_left")
-	if mouse_direction.y > 0.4 and mouse_direction.x > 0.0:
-		_update_sprite("down_right")
-	if mouse_direction.y > 0.9:
+	elif mouse_direction.y > 0.9:
 		_update_sprite("down")
+	elif mouse_direction.y < -0.4 and mouse_direction.x > 0.0:
+		_update_sprite("up_right")
+	elif mouse_direction.y < -0.4 and mouse_direction.x < 0.0:
+		_update_sprite("up_left")
+	elif mouse_direction.y > 0.4 and mouse_direction.x < 0.0:
+		_update_sprite("down_left")
+	elif mouse_direction.y > 0.4 and mouse_direction.x > 0.0:
+		_update_sprite("down_right")
+	elif mouse_direction.x > 0.0:
+		_update_sprite("right")
+	elif mouse_direction.x < 0.0:
+		_update_sprite("left")
 
 func _update_sprite(direction: String) -> void:
 	if(animated_sprite.animation != direction):
