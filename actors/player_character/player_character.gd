@@ -16,9 +16,12 @@ var attack_charged_modifier = 2
 
 var attack_ready : bool = true
 var dash_ready : bool = true
+var outline_character : bool = false
 var velocity := Vector2.ZERO
+var outline_images_store : Dictionary
 
 onready var animated_sprite: AnimatedSprite = $Sprite
+onready var animated_outlines: AnimatedSprite = $SpriteOutline
 onready var axe_attack_scene = load("res://actors/axe_swing_attack.tscn")
 
 onready var afterimage_emitter : AfterimageEmitter = $AfterimageEmitter
@@ -46,6 +49,8 @@ func _ready():
 	temporary_speed = walk_speed
 	
 	player_stats.connect("stat_changed", self, "on_stat_changed")
+	generate_character_pose_outlines()
+	animated_outlines.visible = false
 
 func _physics_process(delta: float) -> void:
 	var input_direction := Vector2(
@@ -56,10 +61,19 @@ func _physics_process(delta: float) -> void:
 	move_and_slide(temporary_speed * input_direction)	
 
 	if input_direction.x != 0.0 or input_direction.y != 0.0:
-		animated_sprite.play()
+		if outline_character:
+			animated_sprite.visible = false
+			animated_outlines.play()
+		else:
+			animated_outlines.visible = false
+			animated_sprite.play()
 	else:
-		animated_sprite.stop()
-		animated_sprite.frame = 0
+		if outline_character:
+			animated_outlines.stop()
+			animated_outlines.frame = 0
+		else:
+			animated_sprite.stop()
+			animated_sprite.frame = 0
 
 	if Input.is_action_just_pressed("attack"):
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
@@ -105,6 +119,8 @@ func handle_mouse_direction(mouse_direction: Vector2) -> void:
 func _update_sprite(direction: String) -> void:
 	if(animated_sprite.animation != direction):
 		animated_sprite.animation = direction
+	if(animated_outlines.animation != direction):
+		animated_outlines.animation = direction
 
 func axe_attack() -> void:
 	var attack = axe_attack_scene.instance()
@@ -171,4 +187,65 @@ func on_stat_changed(stat_name, value) -> void:
 	if stat_name == "damage":
 		attack_damage = value
 		
+func generate_character_pose_outlines() -> void:
+	if animated_sprite:
+		var characterTexture : Texture
+		var animation_sections = animated_sprite.frames.get_animation_names()
+		for anim_name in animation_sections:
+			outline_images_store[anim_name] = []
+			for ix in range(1, animated_sprite.frames.get_frame_count(anim_name)):
+				print("generate_character_pose_outlines(), animation name=", anim_name, " ,index=", ix)
+				characterTexture = animated_sprite.frames.get_frame(anim_name, ix)
+				var imageTexture = characterTexture.get_data()
+				var newImage = outline_from_image(imageTexture)
+				var texture = ImageTexture.new()
+				texture.create_from_image(newImage)
+				outline_images_store[anim_name].append(texture)
+		for anim_key in outline_images_store:
+			animated_outlines.frames.add_animation(anim_key)
+			for frame_idx in outline_images_store[anim_key].size():
+				var curr_image = outline_images_store[anim_key][frame_idx]
+				animated_outlines.frames.add_frame(anim_key, curr_image)
+				print("generate_character_pose_outlines(), animated_outlines, adding frame :", anim_key, ", ",
+				frame_idx)
 
+func outline_from_image(orig_image : Image, color : Color = Color.beige) -> Image:
+	if !orig_image:
+		return null
+	else:
+		var res : Image = orig_image.duplicate()
+		var width = orig_image.get_width()
+		var height = orig_image.get_height()
+		var pixel
+		var left_pixel; var right_pixel
+		orig_image.lock()
+		res.lock()
+		for yi in range(0, height):
+			var pixelrow_data = false
+			left_pixel = -1
+			right_pixel = -1
+			for xi in range(0, width):
+				pixel = orig_image.get_pixel(xi, yi)
+				if pixel.a8 != 0:
+					pixelrow_data = true
+					if xi > 0:
+						left_pixel = xi - 1
+						break
+			if left_pixel < width - 1 and left_pixel >=0:
+				for xii in range(width - 1, left_pixel + 1, -1):
+					pixel = orig_image.get_pixel(xii, yi)
+					if pixel.a8 != 0:
+						right_pixel = xii
+						break
+			if pixelrow_data:
+				if left_pixel >= 0:
+					res.set_pixel(left_pixel, yi, color)
+					#print("generate_character_pose_outlines(), outline pixel :", left_pixel,
+					#" , ", yi) 
+				if right_pixel >= 0:
+					res.set_pixel(right_pixel, yi, color)
+					#print("generate_character_pose_outlines(), outline pixel :", right_pixel,
+					#" , ", yi)
+		res.unlock()
+		orig_image.unlock()
+		return res

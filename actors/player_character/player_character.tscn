@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://actors/player_character/player_character.gd" type="Script" id=1]
 [ext_resource path="res://actors/player_character/player_character.png" type="Texture" id=2]
@@ -169,6 +169,14 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="SpriteFrames" id=41]
+animations = [ {
+"frames": [  ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 8, 6 )
 
@@ -182,8 +190,14 @@ position = Vector2( 40, 7 )
 z_index = 1
 frames = SubResource( 5 )
 animation = "down_left"
+frame = 2
 playing = true
 offset = Vector2( -40, -27 )
+
+[node name="SpriteOutline" type="AnimatedSprite" parent="."]
+position = Vector2( 39, 8 )
+frames = SubResource( 41 )
+offset = Vector2( -39, -26 )
 
 [node name="AfterimageEmitter" parent="." instance=ExtResource( 4 )]
 position = Vector2( 0, -20 )
