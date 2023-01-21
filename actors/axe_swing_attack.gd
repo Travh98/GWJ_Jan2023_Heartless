@@ -26,6 +26,7 @@ func on_body_entered(body : Node) -> void:
 		# Damage the monkey, knock it back
 		print("Hit monkey for", damage)
 		emit_signal("enemy_damage", "FlyingMonkey", damage)
+		(body as FlyingMonkey).set_damage(true, damage)
 		
 func despawn() -> void:
 	queue_free()

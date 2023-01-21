@@ -5,10 +5,12 @@ var move_speed := 20
 var circling_rotate_speed := 0.5
 var attacking_distance := 80
 var detection_radius := 50
+var health := 200
 
 var velocity := Vector2.ZERO
 var direction := Vector2.ZERO
 var target: Node2D
+var monke_damaged : bool = false
 
 var delta_degrees: float = 0 		# used to get a smooth rotation around target
 var swoop_target:= Vector2.ZERO
@@ -24,6 +26,9 @@ onready var detection_area: Area2D = $DetectionArea
 onready var detection_collision: CollisionShape2D = $DetectionArea/DetectionAreaCollision
 onready var swoop_timer: Timer = $SwoopTimer
 onready var move_to_sprite: Sprite = $MoveToSprite # Used for debugging
+onready var animated_sprite: AnimatedSprite = $SpriteMonke
+onready var animated_damage: AnimatedSprite = $SpriteMonkeDamage
+onready var damaged_reset_timer: Timer = $DamageTimer
 
 onready var rng = RandomNumberGenerator.new()
 var clockwise_rotation : bool = false
@@ -39,6 +44,8 @@ func _ready():
 	
 	detection_area.connect("body_entered", self, "on_detection_area_entered")
 	detection_collision.shape.set("radius", detection_radius)
+	damaged_reset_timer.connect("timeout", self, "_on_DamageTimer_timeout")
+	animated_damage.visible = false
 
 func _process(delta):
 	if target == null:
@@ -81,11 +88,26 @@ func on_detection_area_entered(body: Node2D):
 	# For now we can assume that the detection area will only collide with Player objects using the 2D Physics Layers
 #	if(body is PlayerCharacter): 
 	target = body
-	
+
+func set_damage(damaged : bool, damage_value : int) -> void:
+	change_damaged_state(damaged)
+	if damage_value > 0:
+		health -= damage_value
+	if damaged:
+		damaged_reset_timer.start()
+
+func change_damaged_state(damaged : bool) -> void:
+	monke_damaged = damaged
+	animated_damage.visible = monke_damaged
+	animated_sprite.visible = !monke_damaged
+
 func state_change(new_state):
 #	print("Changing state to:", new_state)
 	my_state = new_state 
-	
+
+func _on_DamageTimer_timeout():
+	change_damaged_state(false)
+
 func _on_SwoopTimer_timeout():
 	swoop_target = target.global_transform.origin + Vector2(attacking_distance * sin(get_angle_to(target.global_transform.origin)), attacking_distance * cos(get_angle_to(target.global_transform.origin))) # Monkey Attack Option A
 	state_change(States.Swoop)
