@@ -190,7 +190,6 @@ position = Vector2( 40, 7 )
 z_index = 1
 frames = SubResource( 5 )
 animation = "down_left"
-frame = 2
 playing = true
 offset = Vector2( -40, -27 )
 

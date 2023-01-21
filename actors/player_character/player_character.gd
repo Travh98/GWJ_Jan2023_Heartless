@@ -1,6 +1,8 @@
 class_name PlayerCharacter
 extends KinematicBody2D
 
+enum outline_style { OUTLINE_SINGLE, OUTLINE_DOUBLE }
+
 var walk_speed := 128
 var temporary_speed
 
@@ -40,7 +42,7 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	dash_timer.connect("timeout", self, "dash_finished")
 	attack_cooldown_timer.connect("timeout", self, "attack_cooled_down")
-	attack_cooldown_timer.wait_time = attack_cooldown_secs	
+	attack_cooldown_timer.wait_time = attack_cooldown_secs
 	dash_cooldown_timer.connect("timeout", self, "dash_cooled_down")
 	dash_cooldown_timer.wait_time = dash_cooldown_secs
 	
@@ -50,8 +52,9 @@ func _ready():
 	temporary_speed = walk_speed
 	
 	player_stats.connect("stat_changed", self, "on_stat_changed")
-	generate_character_pose_outlines()
-	animated_outlines.visible = false
+	generate_character_pose_outlines(outline_style.OUTLINE_DOUBLE)
+	animated_outlines.visible = outline_character
+	animated_sprite.visible = !outline_character
 
 func _physics_process(delta: float) -> void:
 	var input_direction := Vector2(
@@ -126,6 +129,7 @@ func _update_sprite(direction: String) -> void:
 
 func axe_attack() -> void:
 	var attack = axe_attack_scene.instance()
+	attack.connect("enemy_damage", self, "on_enemy_damaged")
 	get_tree().root.get_child(0).add_child(attack) # Add attack to the first child of root (the Level itself)
 	attack.global_transform.origin = global_transform.origin + Vector2(0, -16) # 16 is half the height of player sprite
 	#attack.rotation
@@ -139,6 +143,7 @@ func axe_attack() -> void:
 	
 func charged_axe_attack() -> void:
 	var attack : AxeSwingAttack = axe_attack_scene.instance()
+	attack.connect("enemy_damage", self, "on_enemy_damaged")
 	get_tree().root.get_child(0).add_child(attack) # Add attack to the first child of root (the Level itself)
 	attack.global_transform.origin = global_transform.origin + Vector2(0, -16) # 16 is half the height of player sprite
 	attack.rotation = get_angle_to(get_global_mouse_position())
@@ -165,6 +170,7 @@ func dash_finished() -> void:
 	afterimage_emitter.emitting = false
 	
 func attack_cooled_down() -> void:
+	change_outline_character(false)
 	attack_ready = true
 	
 func dash_cooled_down() -> void:
@@ -175,7 +181,12 @@ func charged_attack_timeout() -> void:
 	# Whether its a sound effect or a sprite on the screen 
 	print("Charged attack is ready")
 	crosshair.setChargedAttackReady(true)
-	
+
+func change_outline_character(outline : bool) -> void:
+	outline_character = outline
+	animated_outlines.visible = outline_character
+	animated_sprite.visible = !outline_character
+
 # stat_changed signal comes from PlayerStats component
 func on_stat_changed(stat_name, value) -> void:
 	if stat_name == "health":
@@ -190,8 +201,13 @@ func on_stat_changed(stat_name, value) -> void:
 		pass
 	if stat_name == "damage":
 		attack_damage = value
-		
-func generate_character_pose_outlines() -> void:
+
+func on_enemy_damaged(enemy_name, damage) -> void:
+	print("on_enemy_damaged(), name = ", enemy_name, ", damage = ", damage)
+	if enemy_name != null and damage > 0:
+		change_outline_character(true)
+
+func generate_character_pose_outlines(ostyle = outline_style.OUTLINE_DOUBLE) -> void:
 	if animated_sprite:
 		var characterTexture : Texture
 		var animation_sections = animated_sprite.frames.get_animation_names()
@@ -201,7 +217,11 @@ func generate_character_pose_outlines() -> void:
 				print("generate_character_pose_outlines(), animation name=", anim_name, " ,index=", ix)
 				characterTexture = animated_sprite.frames.get_frame(anim_name, ix)
 				var imageTexture = characterTexture.get_data()
-				var newImage = outline_from_image(imageTexture)
+				var newImage : Image
+				if ostyle == outline_style.OUTLINE_SINGLE:
+					newImage = outline_from_image(imageTexture)
+				else:
+					newImage = outline_from_image(imageTexture, Color.black, 1, 2)
 				var texture = ImageTexture.new()
 				texture.create_from_image(newImage)
 				outline_images_store[anim_name].append(texture)
@@ -213,7 +233,7 @@ func generate_character_pose_outlines() -> void:
 				print("generate_character_pose_outlines(), animated_outlines, adding frame :", anim_key, ", ",
 				frame_idx)
 
-func outline_from_image(orig_image : Image, color : Color = Color.beige) -> Image:
+func outline_from_image(orig_image : Image, color : Color = Color.beige, outline_gap : int = 0, boundary_lines = 1) -> Image:
 	if !orig_image:
 		return null
 	else:
@@ -233,21 +253,33 @@ func outline_from_image(orig_image : Image, color : Color = Color.beige) -> Imag
 				if pixel.a8 != 0:
 					pixelrow_data = true
 					if xi > 0:
-						left_pixel = xi - 1
+						left_pixel = xi - 1 - outline_gap
+						if left_pixel < 0:
+							left_pixel = 0
 						break
 			if left_pixel < width - 1 and left_pixel >=0:
 				for xii in range(width - 1, left_pixel + 1, -1):
 					pixel = orig_image.get_pixel(xii, yi)
 					if pixel.a8 != 0:
-						right_pixel = xii
+						right_pixel = xii + 1 + outline_gap
+						if right_pixel > width - 1:
+							right_pixel = width - 1
 						break
 			if pixelrow_data:
 				if left_pixel >= 0:
 					res.set_pixel(left_pixel, yi, color)
+					if boundary_lines == 2:
+						var left_pixel2 = left_pixel - 1 - outline_gap
+						if left_pixel2 >= 0:
+							res.set_pixel(left_pixel2, yi, color)
 					#print("generate_character_pose_outlines(), outline pixel :", left_pixel,
 					#" , ", yi) 
 				if right_pixel >= 0:
 					res.set_pixel(right_pixel, yi, color)
+					if boundary_lines == 2:
+						var right_pixel2 = right_pixel + 1 + outline_gap
+						if right_pixel2 < width:
+							res.set_pixel(right_pixel2, yi, color)
 					#print("generate_character_pose_outlines(), outline pixel :", right_pixel,
 					#" , ", yi)
 		res.unlock()

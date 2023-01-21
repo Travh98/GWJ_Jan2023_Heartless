@@ -5,7 +5,9 @@ var despawn_timer
 export var move_speed = 200
 var moving_attack : bool = false
 var damage : int = 50
-onready var animated_axe : AnimatedSprite = $Sprite 
+onready var animated_axe : AnimatedSprite = $Sprite
+
+signal enemy_damage(enemy_name, damage)
 
 func _ready():
 	self.connect("body_entered", self, "on_body_entered")
@@ -23,6 +25,7 @@ func on_body_entered(body : Node) -> void:
 	if body is FlyingMonkey:
 		# Damage the monkey, knock it back
 		print("Hit monkey for", damage)
+		emit_signal("enemy_damage", "FlyingMonkey", damage)
 		
 func despawn() -> void:
 	queue_free()
