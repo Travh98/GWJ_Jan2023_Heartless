@@ -17,6 +17,7 @@ var attack_charged_modifier = 2
 var attack_ready : bool = true
 var dash_ready : bool = true
 var outline_character : bool = false
+var current_direction = "down_left"
 var velocity := Vector2.ZERO
 var outline_images_store : Dictionary
 
@@ -117,6 +118,7 @@ func handle_mouse_direction(mouse_direction: Vector2) -> void:
 		_update_sprite("left")
 
 func _update_sprite(direction: String) -> void:
+	current_direction = direction
 	if(animated_sprite.animation != direction):
 		animated_sprite.animation = direction
 	if(animated_outlines.animation != direction):
@@ -126,8 +128,10 @@ func axe_attack() -> void:
 	var attack = axe_attack_scene.instance()
 	get_tree().root.get_child(0).add_child(attack) # Add attack to the first child of root (the Level itself)
 	attack.global_transform.origin = global_transform.origin + Vector2(0, -16) # 16 is half the height of player sprite
-	attack.rotation = get_angle_to(get_global_mouse_position())
-	attack.global_transform.origin += Vector2(attack_range, 0).rotated(attack.rotation)
+	#attack.rotation
+	var axe_rotate = get_angle_to(get_global_mouse_position())
+	attack.update_direction(current_direction)
+	attack.global_transform.origin += Vector2(attack_range, 0).rotated(axe_rotate)
 	
 	attack.set_damage(attack_damage)
 	attack_ready = false

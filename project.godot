@@ -143,6 +143,10 @@ restart={
 
 project/assembly_name="godot wild jam 53 Heartless"
 
+[network]
+
+limits/debugger_stdout/max_chars_per_second=32768
+
 [physics]
 
 common/enable_pause_aware_picking=true
