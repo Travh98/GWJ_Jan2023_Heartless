@@ -6,9 +6,9 @@
 script = ExtResource( 1 )
 portrait_image_resource = "res://assets/images/npc/tin-man-pose.png"
 title_font_resource = "res://assets/fonts/PixelAE-Regular.ttf"
-character_title = "Tin Man"
-title_height = 14
+title_height = 10
 title_text_color = Color( 0.494118, 0.921569, 0.992157, 1 )
+show_portrait = false
 frame_color = Color( 0.788235, 0.0313726, 0.0313726, 1 )
 frame_top_left = Vector2( 4, 4 )
 frame_extent = Vector2( 112, 82 )

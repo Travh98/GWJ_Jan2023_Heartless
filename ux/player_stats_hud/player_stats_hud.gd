@@ -134,25 +134,45 @@ export (Color) var frame_color
 export (Vector2) var frame_top_left
 export (Vector2) var frame_extent
 export (Vector2) var portrait_offset
+export (Vector2) var container_position = Vector2(1, 1)
 export (Dictionary) var player_stats
 export (Dictionary) var items_collected
 
 var player_hud : PlayerStatsFrame
+var dynamic_placement : bool = true
+var dynamic_items_indices : Dictionary = { "oil-can" : 0, "shield" : 1}
 const items_placement : Dictionary = { "oil-can" : Vector2(4, 2), "shield" : Vector2(24, 2) }
 const items_image_resource : Dictionary = { "oil-can" : "res://assets/images/stats/oil-can.png",
 "shield" : "res://assets/images/stats/shield.png"}
+const items_container_image = "res://assets/images/stats/items-frame.png"
+
+func get_item_container_placement(item : String) -> Vector2:
+	var res = Vector2.ZERO
+	var itemdraw_offset = Vector2(3, 4)
+	print("get_item_container_placement() start, item = ", item)
+	if item != null:
+		var idx = dynamic_items_indices[item]
+		print("get_item_container_placement(), item = ", item, " , index = ", idx)
+		res = itemdraw_offset + Vector2(16 * (idx % 2), 16 * int(idx / 2))
+	return res
 
 func process_items(playerFrame : PlayerStatsFrame) -> void:
 	var image_resource
 	var sprite_position : Vector2
+	playerFrame.queue_draw_sprite(items_container_image, container_position)
 	if items_collected:
 		if items_collected.has("oil-can"):
-			sprite_position = items_placement["oil-can"]
+			if dynamic_placement:
+				sprite_position = get_item_container_placement("oil-can")
+			else:
+				sprite_position = items_placement["oil-can"]
 			image_resource = items_image_resource["oil-can"]
-			#playerFrame.draw_sprite_image(null, image_resource, sprite_position)
 			playerFrame.queue_draw_sprite(image_resource, sprite_position)
 		if items_collected.has("shield"):
-			sprite_position = items_placement["shield"]
+			if dynamic_placement:
+				sprite_position = get_item_container_placement("shield")
+			else:
+				sprite_position = items_placement["shield"]
 			image_resource = items_image_resource["shield"]
 			playerFrame.queue_draw_sprite(image_resource, sprite_position)
 
